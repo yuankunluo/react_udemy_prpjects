@@ -2,6 +2,7 @@ import React  from 'react';
 import './App.css';
 import { Component } from 'react';
 import { CardList } from './components/card-list/card-list.component'
+import { SearchBox } from './components/search-box/search-box.component';
 
 class App extends Component {
 
@@ -14,6 +15,12 @@ class App extends Component {
       ],
       searchField: ''
     }
+
+  }
+
+  // Arrow get Lexical Scop automatically.
+  handleChange = (e) => {
+    this.setState({searchField: e.target.value});
   }
 
   componentDidMount(){
@@ -29,8 +36,10 @@ class App extends Component {
         monster => monster.name.toLowerCase().includes(searchField.toLowerCase()))
       return (
         <div className="App">
-          <input type="search" placeholder="search monster" 
-          onChange={e => this.setState({searchField: e.target.value})} />
+          <h1>Monsters Roladex</h1>
+          <SearchBox 
+            handleChange={this.handleChange}
+            placeholder="Search monsters"/>
           <CardList monsters= {filteredMonsters}/>
         </div>
       );
