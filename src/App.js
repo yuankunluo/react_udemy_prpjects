@@ -8,11 +8,10 @@ import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
 // Firebase related.
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
-
-  constructor(){
+  constructor() {
     super();
     this.state = {
       currentUser: null
@@ -22,32 +21,44 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged( user => {
-      this.setState({
-        currentUser: user
-      })
-    })
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        userRef.onSnapshot(snapshot => {
+          this.setState(
+            {
+              currentUser: {
+                id: snapshot.id,
+                ...snapshot.data()
+              }
+            },
+            () => {
+              console.log(this.state);
+            }
+          );
+        });
+      }
+    });
   }
 
   componentWillUnmount() {
     // Cancel the subscription.
-    this.unsubscribeFromAuth()
+    this.unsubscribeFromAuth();
   }
 
-   render() {return (
-    <div>
-      
-      <Header currentUser={this.state.currentUser}/>
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
 
-      <Switch>
-        <Route exact={true} path='/' component={HomePage} />
-        <Route path='/shop' component={ShopPage} />
-        <Route path='/signin' component={SignInAndSignUp} />
-      </Switch>
-
-    </div>
-  );
-   }
+        <Switch>
+          <Route exact={true} path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route path='/signin' component={SignInAndSignUp} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
