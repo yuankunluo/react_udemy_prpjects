@@ -1,5 +1,18 @@
-import FIREBASE_CONFIG from './firebase.credentials';
+// import FIREBASE_CONFIG from './firebase.credentials';
 import * as firebase from 'firebase';
+
+const  FIREBASE_CONFIG = {
+    apiKey: "AIzaSyCp37s25EceuEEhb4ysMLK7JlzoTppblwU",
+    authDomain: "crwn-clothing-shop-b16f4.firebaseapp.com",
+    databaseURL: "https://crwn-clothing-shop-b16f4.firebaseio.com",
+    projectId: "crwn-clothing-shop-b16f4",
+    storageBucket: "crwn-clothing-shop-b16f4.appspot.com",
+    messagingSenderId: "623496138143",
+    appId: "1:623496138143:web:d30b38c39b75710bd781aa",
+    measurementId: "G-5PHG8DDH3Z"
+  };
+
+// Init Firebase service.
 firebase.initializeApp(FIREBASE_CONFIG);
 
 // Export auth, firestore.
