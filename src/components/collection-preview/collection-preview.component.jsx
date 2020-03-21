@@ -1,9 +1,9 @@
 import React from 'react';
-import './preview-collection.styles.scss';
+import './collection-preview.styles.scss';
 
 import CollectionItem from '../collection-item/collection-item.component';
 
-const PreviewCollection = ({ title, items }) => {
+const CollectionPreview = ({ title, items }) => {
   return (
     <div className='collection-preview'>
       <h1 className='title'>{title.toUpperCase()}</h1>
@@ -18,4 +18,4 @@ const PreviewCollection = ({ title, items }) => {
   );
 };
 
-export default PreviewCollection;
+export default CollectionPreview;
