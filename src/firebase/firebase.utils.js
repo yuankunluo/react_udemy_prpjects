@@ -73,4 +73,28 @@ export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
 }
 
 
+export const convertCollectionSnapshoToMap = (collections) => {
+    const transformedCollection = collections.docs.map(
+        doc => {
+            // Pull data out.
+            const {title, items} = doc.data();
+            return {
+                routeName: encodeURI(title.toLowerCase()),
+                id: doc.id, 
+                title,
+                items
+            }
+        }
+    )
+    // Covert the transformed data into the shape suits for 
+    // our redux.
+    return transformedCollection.reduce(
+        (acc, collection) => {
+            acc[collection.title.toLowerCase()] = collection;
+            return acc;
+        }, 
+        {});
+    
+}
+
 export default firebase;
