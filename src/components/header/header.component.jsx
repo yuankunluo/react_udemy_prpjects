@@ -1,7 +1,6 @@
 import React from 'react';
-import './header.styles.scss';
+import {HeaderContainer, LogoContainer, OptionsContainer, OptionLink} from './header.styles';
 
-import { Link } from 'react-router-dom';
 // Import SVG File direct as ReactComponent
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
@@ -16,34 +15,34 @@ import { selectCartHidden} from '../../redux/cart/cart.selectors';
 
 
 const Header = ({ currentUser, hidden }) => (
-  <div className='header'>
-    <Link className='logo-container' to='/'>
+  <HeaderContainer>
+    <LogoContainer  to='/'>
       <Logo className='logo' />
-    </Link>
+    </LogoContainer>
 
-    <div className='options'>
-      <Link className='option' to='/shop'>
+    <OptionsContainer>
+      <OptionLink  to='/shop'>
         Shop
-      </Link>
-      <Link className='option' to='/shop'>
+      </OptionLink>
+      <OptionLink to='/shop'>
         Contact
-      </Link>
+      </OptionLink>
 
       {currentUser ? (
-        <div className='option' onClick={() => auth.signOut()}>
+        <OptionLink as='div' className='option' onClick={() => auth.signOut()}>
           Sign Out
-        </div>
+        </OptionLink>
       ) : (
-        <Link className='option' to='/signin'>
+        <OptionLink className='option' to='/signin'>
           Sign In
-        </Link>
+        </OptionLink>
       )}
 
       <CartIcon />
-    </div>
+    </OptionsContainer>
 
     {hidden ? null : <CardDropdown />}
-  </div>
+  </HeaderContainer>
 );
 
 const mapStateToProps = createStructuredSelector({
