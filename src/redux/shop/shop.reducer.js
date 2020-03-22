@@ -1,7 +1,7 @@
 import ShopActionTypes from './shop.types';
 
 const INIT_STATE = {
-    collections: {},
+    collections: null,
     isFetching: false,
     errorMessage: undefined
 };
