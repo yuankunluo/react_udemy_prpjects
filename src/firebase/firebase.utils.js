@@ -1,6 +1,8 @@
 // import FIREBASE_CONFIG from './firebase.credentials';
 import * as firebase from 'firebase';
 
+// TODO: please watch out to handle this configuration
+// in more secure way. 
 const  FIREBASE_CONFIG = {
     apiKey: "AIzaSyCp37s25EceuEEhb4ysMLK7JlzoTppblwU",
     authDomain: "crwn-clothing-shop-b16f4.firebaseapp.com",
@@ -57,5 +59,18 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     return userRef;
 }
+
+// Add Documents to Firebase.
+export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+    const batch = firestore.batch();
+    objectToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, obj);
+    })
+    // Firebase call.
+    return await batch.commit();
+}
+
 
 export default firebase;
