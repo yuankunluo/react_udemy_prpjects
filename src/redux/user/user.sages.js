@@ -4,7 +4,8 @@ import { takeLatest, put , all, call} from 'redux-saga/effects';
 import UserActionTypes from './user.types';
 import { 
     signInSuccess, signInFailure,
-    signOutSuccess, signOutFailure
+    signOutSuccess, signOutFailure, 
+    singUpFailure, singUpSuccess
  } from './user.actions';
 // Firebase Utils.
 import { auth, gAuthProvider, 
@@ -12,9 +13,9 @@ import { auth, gAuthProvider,
 } from '../../firebase/firebase.utils';
 
 
-export function* getUserSnapshotFromAuth(userAuth) {
+export function* getUserSnapshotFromAuth(userAuth, additionalData) {
     try {
-        const userRef = yield call(createUserProfileDocument, userAuth);
+        const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
         const userSnapshot = yield userRef.get();
         yield put(signInSuccess({
             id: userSnapshot.id, 
@@ -92,6 +93,36 @@ export function* onSignOutStart(){
         signOut
     );
 }
+// ------------ Sign Up sagas --------------
+
+export function* signUp({payload: {email, password , displayName}}){
+    try {
+        const {user} = yield auth.createUserWithEmailAndPassword(email, password);
+        yield put(singUpSuccess({ user, additionalData: {displayName}}))
+    } catch (error) {
+        yield put(singUpFailure(error));
+    }
+}
+
+export function* onSignUpStart(){
+    yield takeLatest(
+        UserActionTypes.SIGN_UP_START,
+        signUp
+    );
+}
+
+
+export function* singInAfterSignUp({payload: {user, additionalData}}){
+    yield getUserSnapshotFromAuth(user, additionalData);
+}
+
+export function* onSignUpSuccess(){
+    yield takeLatest(
+        UserActionTypes.SIGN_UP_SUCCESS,
+        singInAfterSignUp
+    );
+}
+
 
 // ------------ sagas --------------
 export function* userSagas() {
@@ -99,6 +130,8 @@ export function* userSagas() {
         call(onGoogleSignInStart),
         call(onEmailSignInStart),
         call(isUserAuthenticated),
-        call(onSignOutStart)
+        call(onSignOutStart),
+        call(onSignUpStart),
+        call(onSignUpSuccess)
     ])
 }
