@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './shop-page.styles.scss';
 // set collection routes.
 import { Route } from 'react-router-dom';
@@ -12,15 +12,12 @@ import CollectionOverviewContainer from '../../components/collection-overview/co
 import CollectionContainer from '../../components/collection-overview/collection-overview.container';
 
 
-class ShopPage extends React.Component {
+const  ShopPage = ({fetchCollectionStart, match}) =>  {
 
-  componentDidMount() {  
-    const { fetchCollectionStart } = this.props;
-    fetchCollectionStart();
-  }
+    useEffect(()=>{
+      fetchCollectionStart();
+    },[fetchCollectionStart]);
 
-  render() {
-    const { match} = this.props;
     return (
       <div className='shop-page'>
         <Route 
@@ -33,7 +30,7 @@ class ShopPage extends React.Component {
         />
       </div>
     );
-  }
+  
 }
 
 
