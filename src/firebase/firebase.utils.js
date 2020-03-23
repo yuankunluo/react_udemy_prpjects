@@ -22,7 +22,7 @@ export const auth = firebase.auth()
 export const firestore = firebase.firestore();
 
 // Setup Google Authentication utils.
-const gAuthProvider = new firebase.auth.GoogleAuthProvider();
+export const gAuthProvider = new firebase.auth.GoogleAuthProvider();
 gAuthProvider.setCustomParameters({
     prompt : 'select_account'
 });
