@@ -30,7 +30,6 @@ const userReducer = (state = INITIAL_STATE,  action) => {
                 error: action.payload
             }
         }
-
         default:
             return state;
     }
