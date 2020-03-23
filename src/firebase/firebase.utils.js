@@ -30,6 +30,17 @@ gAuthProvider.setCustomParameters({
 
 export const signInWithGoogle = () => auth.signInWithPopup(gAuthProvider);
 
+// Get current user. 
+export const getCurrentUser = () => {
+    return new Promise( (resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe();
+            resolve(userAuth);
+        }, reject)
+    })
+}
+
+
 // Create a user Profile in firebase store;
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if (!userAuth) {

@@ -15,7 +15,15 @@ const userReducer = (state = INITIAL_STATE,  action) => {
                 error: undefined
             };
         }
-
+        case UserActionTypes.SIGN_OUT_SUCCESS: {
+            return {
+                ...state,
+                currentUser: undefined,
+                error: undefined
+            }
+        }
+        // Failure
+        case UserActionTypes.SIGN_OUT_FAILURE:
         case UserActionTypes.SIGN_IN_FAILURE: {
             return {
                 ...state,
